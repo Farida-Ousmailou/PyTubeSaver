@@ -46,13 +46,21 @@ def main():
     path = input ("Entrez le chemin du repertoire de destination : ")
 
     #Création d'objet YouTube avec l'URL de la vidéo
-    youtube_video = YouTube(url_video)
+    try:
+        youtube_video = YouTube(url_video)
+        # Appel de la fonction Affichage des métandonnées
+        Affichage_des_metadonnees(youtube_video)
 
-    #Appel de la fonction Affichage des métandonnées
-    Affichage_des_metadonnees(youtube_video)
+        # Appel de la fonction Download vidéo
+        Download_video(youtube_video)
+    except Exception as e:
+        error_message = str(e)
+        if error_message.__contains__("regex_search"):
+            print("Veuillez saisir un url correct")
+        else:
+            print('Failed: ' + str(e))
 
-    #Appel de la fonction Download vidéo
-    Download_video(youtube_video)
+
 
 if __name__ == "__main__":
     main()
