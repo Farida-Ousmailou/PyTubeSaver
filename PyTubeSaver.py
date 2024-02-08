@@ -1,10 +1,13 @@
 # Projet "pytubesaver"
 # module pytube
+# module re
 from re import match
 from pytube import YouTube
 
-"""Ce programme utilise le module pytube afin de créer deux fonctions permettant succèssivement de télécharger et
-de l'extractions des métadpnnées sur n'importe quelle vidéo youtube"""
+"""Ce programme utilise les modules Pytube et re pour créer des fonctions permettant de télécharger des vidéos depuis 
+YouTube et d'extraire leurs métadonnées vers un chemin de stockage prédéfini."""
+
+#Fonction permettant de le téléchargement
 def Download_video(youtube_video, path):
     try:
         #Choix de la plus haute résolution
@@ -26,6 +29,7 @@ def Download_video(youtube_video, path):
     except:
         print("Une erreur s'est produites")
 
+#Fonction permettant l'affichage des données de la vidéo
 def Affichage_des_metadonnees (youtube_video):
     try:
         print("Titre de la vidéo: ", youtube_video.title)
@@ -35,6 +39,7 @@ def Affichage_des_metadonnees (youtube_video):
     except:
         print("Impossible d'afficher les métadonnées")
 
+#fonction permettant le recueil de l'url
 def get_youtube_url():
     url_video = ""
     youtube_regex = (
@@ -50,7 +55,7 @@ def get_youtube_url():
     return url_video
 
 
-
+#fonction permettant le recueil du chemin de stockage
 def get_chemin():
     path = ""
     path_regex = r'(?:\/(?:[^/\0]+\/)*[^/\0]+)?'
@@ -62,7 +67,7 @@ def get_chemin():
             print("Le chemin : " + path + " n'est pas bon. Veuillez essayer à nouveau...")
     return path
 
-
+#Fonction main début de l'exécution du programme
 def main():
     #Demande à l'utilisateur l'url et l'emplacement de la vidéo sur son repertoire
     url_video = get_youtube_url()
