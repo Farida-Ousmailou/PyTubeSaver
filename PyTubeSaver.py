@@ -5,7 +5,7 @@ from pytube import YouTube
 
 """Ce programme utilise le module pytube afin de créer deux fonctions permettant succèssivement de télécharger et
 de l'extractions des métadpnnées sur n'importe quelle vidéo youtube"""
-def Download_video(youtube_video):
+def Download_video(youtube_video, path):
     try:
         #Choix de la plus haute résolution
         stream = youtube_video.streams.get_highest_resolution()
@@ -20,7 +20,7 @@ def Download_video(youtube_video):
         #Téléchargement de la vidéo avec l'avénénement de la progression
         print("Téléchragement en cours...")
         youtube_video.register_on_progress_callback(Download_progress)
-        stream.download()
+        stream.download(path)
         print("Fin de téléchargement")
 
     except:
@@ -34,7 +34,6 @@ def Affichage_des_metadonnees (youtube_video):
         print("Description: ", youtube_video.description)
     except:
         print("Impossible d'afficher les métadonnées")
-
 
 def get_youtube_url():
     url_video = ""
@@ -50,8 +49,17 @@ def get_youtube_url():
             print("L'url : "+url_video+" n'est pas un lien video YouTube. Veuillez essayer ...")
     return url_video
 
+
+
 def get_chemin():
-    path = input("Entrez le chemin du repertoire de destination : ")
+    path = ""
+    path_regex = r'(?:\/(?:[^/\0]+\/)*[^/\0]+)?'
+    is_path_matched = None
+    while is_path_matched is None:
+        path = input("Entrez le chemin du répertoire de destination : ")
+        is_path_matched = match(path_regex, path)
+        if is_path_matched is None:
+            print("Le chemin : " + path + " n'est pas bon. Veuillez essayer à nouveau...")
     return path
 
 
@@ -67,7 +75,7 @@ def main():
         Affichage_des_metadonnees(youtube_video)
 
         # Appel de la fonction Download vidéo
-        Download_video(youtube_video)
+        Download_video(youtube_video, path)
     except Exception as e:
         error_message = str(e)
         if error_message.__contains__("regex_search"):
